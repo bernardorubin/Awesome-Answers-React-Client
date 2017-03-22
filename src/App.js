@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import QuestionsIndex from './components/QuestionsIndex';
 import QuestionShow from './components/QuestionShow';
+import QuestionNew from './components/QuestionNew';
 import './App.css';
 
 // Step 1: Test that your API backend working correctly with
@@ -79,7 +80,8 @@ class App extends Component {
          method: 'POST',
          // JSON.stringify transforms a JavaScript into a JSON formatted
          // string of text
-         body: JSON.stringify(question)
+        //  body: JSON.stringify(question) -> this works even though we aren't specifying it as a question WEIRD
+         body: JSON.stringify({question})
        }
      )
      .then(() => { this.getQuestions(); })
@@ -137,41 +139,6 @@ class App extends Component {
   }
 }
 
-function QuestionNew ({question, onSubmit = () => {}}) {
-  const handleSubmit = event => {
-    event.preventDefault();
-    // the FormData constructor can be used to created
-    // form data object from a form node
-    // the object will hold the values from all its input
-    // fields under their name attribute
-    // loop over each with .forEach
-    // get individual values with .get('title')
-    // set values with .set('title', 'Rob')
-    const fData = new FormData(event.currentTarget);
-    // debugger;
-    onSubmit({
-      title: fData.get('title'),
-      body: fData.get('body')
-    })
-  };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        {/* for is a reserved word in javascript, use htmlFor
-          in labels html attributes instead */}
-        <label htmlFor="questionTitle">Title: </label>
-        <input id="questionTitle" name="title"/>
-      </div>
-      <div>
-        <textarea id="questionBody" name="body">
-        </textarea>
-      </div>
-      <div>
-        <input type="submit" value="Submit"/>
-      </div>
-    </form>
-  )
-}
 
 export default App;
