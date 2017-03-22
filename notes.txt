@@ -1,0 +1,40 @@
+last user's api key "41091b742e7ad5f55c6f6c845da6d1a2"
+question id "74"
+
+in javascript simple fetch on browser
+
+create-react-app awesome_answers_react_client
+
+fetch('http://localhost:3000/api/v1/questions').then(r => r.text()).then(console.info)
+->>GET http://localhost:3000/api/v1/questions 401 (Unauthorized) YEAH!
+
+
+Passing the API key ->>
+fetch('http://localhost:3000/api/v1/questions?api_key=41091b742e7ad5f55c6f6c845da6d1a2').then(r => r.text()).then(console.info)
+
+then go to app.js
+
+How to make that fetch if params passed in headers?
+
+State ->>
+
+
+Props and State
+
+
+To debug the test that we are getting back
+// .then(test => {
+//     debugger;
+//   })
+
+jsx ->> access variable
+{}
+
+
+ternary operator is a expression and not a statement like an if
+
+
+DIFFERENCE BETWEEN
+||
+and
+||=
