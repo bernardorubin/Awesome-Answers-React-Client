@@ -43,6 +43,7 @@ class App extends Component {
     .then(({questions}) => this.setState({questions}))
   }
 
+// This is a method and a function 👇
   getQuestion (id) {
     // to add get parameters
     // at the end of a url add a question mark, `?`
@@ -69,8 +70,12 @@ class App extends Component {
   render() {
     let questionView = '';
     if (this.state.question !== null) {
-      questionView = <QuestionShow question={this.state.question || {}} />;
-    } else {
+          questionView = (
+            <QuestionShow
+              onBackClick={() => this.setState({question: null})}
+              question={this.state.question || {}} />
+          );
+        } else {
       questionView = (
         <QuestionsIndex
           // onQuestionClick={id => { console.info(id) }}
