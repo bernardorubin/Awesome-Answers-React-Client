@@ -33,6 +33,8 @@ class App extends Component {
     }
     //Don't forget to bind methods used as callbacks ⛓
     this.getQuestion = this.getQuestion.bind(this);
+    this.postQuestion = this.postQuestion.bind(this);
+
   }
 
   getQuestions () {
@@ -60,6 +62,30 @@ class App extends Component {
     .then(question => this.setState({ question }))
   }
 
+  postQuestion (question) {
+     fetch(
+       `${BASE_URL}/questions?api_key=${API_KEY}`,
+       {
+         // to make a json request with fetch
+         // you have to specify that information the hearders
+         // - the Accept header tells the server what kind of data
+         // we expect in return
+         // - the Content-Type header tells the server what kind of data
+         // we are sending it
+         headers: {
+           'Accept': 'application/json, text/plain, */*',
+           'Content-Type': 'application/json'
+         },
+         method: 'POST',
+         // JSON.stringify transforms a JavaScript into a JSON formatted
+         // string of text
+         body: JSON.stringify(question)
+       }
+     )
+     .then(() => { this.getQuestions(); })
+     .catch(console.error)
+   }
+
   // componentDidMount is a lifecycle callback that is executed when
   // this component is finally rendered the user's browser
   componentDidMount () {
@@ -72,7 +98,10 @@ class App extends Component {
     if (this.state.question !== null) {
           questionView = (
             <QuestionShow
-              onBackClick={() => this.setState({question: null})}
+              onBackClick={e => {
+                e.preventDefault();
+                this.setState({question: null});
+              }}
               question={this.state.question || {}} />
           );
         } else {
@@ -86,6 +115,8 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Awesome Answers</h1>
+        {/* <QuestionNew onSubmit={console.info} /> */}
+        <QuestionNew onSubmit={this.postQuestion} />
         {/* <ul>
           {
             this.state.questions.map(
@@ -104,6 +135,43 @@ class App extends Component {
       </div>
     );
   }
+}
+
+function QuestionNew ({question, onSubmit = () => {}}) {
+  const handleSubmit = event => {
+    event.preventDefault();
+    // the FormData constructor can be used to created
+    // form data object from a form node
+    // the object will hold the values from all its input
+    // fields under their name attribute
+    // loop over each with .forEach
+    // get individual values with .get('title')
+    // set values with .set('title', 'Rob')
+    const fData = new FormData(event.currentTarget);
+    // debugger;
+    onSubmit({
+      title: fData.get('title'),
+      body: fData.get('body')
+    })
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        {/* for is a reserved word in javascript, use htmlFor
+          in labels html attributes instead */}
+        <label htmlFor="questionTitle">Title: </label>
+        <input id="questionTitle" name="title"/>
+      </div>
+      <div>
+        <textarea id="questionBody" name="body">
+        </textarea>
+      </div>
+      <div>
+        <input type="submit" value="Submit"/>
+      </div>
+    </form>
+  )
 }
 
 export default App;
